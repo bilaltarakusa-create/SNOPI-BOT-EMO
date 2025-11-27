@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNOPI BOT - لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Poppins:wght@400;600;800&family=Rye&family=Rubik+Wet+Paint&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* (*** أكواد CSS الأساسية والجمالية تبقى كما هي بدون تغيير ***) */
+        :root {
+            --bg-dark: #0a0b10;
+            --glass-bg: rgba(20, 20, 35, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary-neon: #ff4757;
+            --gold-color: #FFD700;
+            --blue-color: #1e90ff;
+            --green-color: #2ed573; 
+            --bright-green-glow: #7CFC00; 
+            --orange-fire: #ff7f50;
+            --neon-pink-red: #ff007f; 
+            --input-bg: rgba(0,0,0,0.3);
+            --admin-bg: rgba(18, 18, 40, 0.9); 
+            --ghost-color: #00FFFF;
+            /* ألوان التوهج الجديدة */
+            --launch-color-blue: #00BFFF;
+            --launch-color-purple: #8A2BE2;
+            --launch-color-red: #FF4500;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; outline: none; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-dark);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255, 71, 87, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(30, 144, 255, 0.1) 0%, transparent 20%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%; max-width: 450px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative; 
+        }
+        
+        .page-section {
+            display: none; 
+            width: 100%;
+            padding: 0;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* --- الهيدر --- */
+        .header { text-align: center; margin-bottom: 25px; position: relative; }
+        
+        .title-box h1 {
+            font-family: 'Rye', serif; 
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin: 0; 
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #ff0000, #8a2be2, #ff1493);
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.8));
+            animation: glowTitle 3s infinite alternate;
+        }
+        
+        /* زر الشبح الجديد */
+        .settings-btn {
+            position: absolute; top: 5px; right: 5px; background: var(--input-bg);
+            border: 1px solid var(--glass-border); width: 40px; height: 40px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 1.2rem;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            z-index: 10; pointer-events: all; 
+        }
+        
+        /* ستايل الشبح المتوهج */
+        .settings-btn i {
+            color: var(--ghost-color);
+            filter: drop-shadow(0 0 5px var(--ghost-color)) drop_shadow(0 0 10px rgba(0, 255, 255, 0.5));
+            animation: ghostPulse 2s infinite alternate;
+        }
+
+        @keyframes ghostPulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--ghost-color)); }
+            100% { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--ghost-color)); }
+        }
+
+        .settings-btn:hover { background: rgba(0, 255, 255, 0.1); transform: rotate(5deg) scale(1.05); }
+
+
+        .vip-code-section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .vip-code-section h2 {
+            font-size: 1.5rem; color: var(--gold-color); margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--gold-color);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        
+        .vip-code-section h2 i {
+             font-size: 1.8rem;
+             animation: goldPulse 2s infinite alternate;
+        }
+
+        .btn-gold {
+            width: 100%; padding: 14px; border: none; border-radius: 14px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: var(--bg-dark); font-weight: 900; font-size: 1.1rem;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            cursor: pointer; position: relative; overflow: hidden;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.6);
+            transition: transform 0.2s;
+            margin-top: 15px;
+        }
+        .btn-gold:active { transform: scale(0.96); }
+
+        .login-panel, .admin-panel {
+            background: var(--admin-bg);
+            border-radius: 18px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .login-panel h2, .admin-panel h2 {
+            color: #fff; font-weight: 700; margin-bottom: 20px; font-size: 1.3rem;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .admin-options {
+            display: grid; grid-template-columns: 1fr; gap: 10px;
+        }
+
+        .admin-options label {
+            background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;
+            cursor: pointer; transition: 0.3s; font-size: 0.9rem; border: 1px solid transparent;
+        }
+        .admin-options label:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-neon); }
+        .admin-options input[type="radio"] { display: none; }
+        .admin-options input[type="radio"]:checked + label {
+            background: var(--primary-neon); color: #fff; border-color: #ff007f;
+            box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .btn-admin {
+            width: 100%; padding: 12px; border: none; border-radius: 10px;
+            background: #ff4757; color: white; font-weight: 700;
+            margin-top: 20px; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-admin:hover { background: #ff6b81; box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4); }
+
+        .title-box span { 
+            background: linear-gradient(to right, #ff1493, #fff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes glowTitle {
+            from { filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.6)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 20, 147, 1)); }
+        }
+
+        .vip-badge {
+            margin-top: 5px; display: inline-flex; align-items: center; gap: 6px;
+            font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1rem;
+            color: var(--gold-color); text-transform: uppercase;
+            animation: goldPulse 2s infinite alternate;
+        }
+        .vip-badge i { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.8)); }
+
+        @keyframes goldPulse {
+            0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.2); transform: scale(1); }
+            100% { text-shadow: 0 0 25px rgba(255, 215, 0, 0.8); transform: scale(1.05); }
+        }
+
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
+            padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; margin-top: 10px;
+            color: #bdc3c7;
+        }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; transition: 0.4s; }
+        .dot.online { background: var(--green-color); box-shadow: 0 0 10px var(--green-color); }
+
+        
+        .input-group {
+            background: var(--input-bg); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px; display: flex; align-items: center; padding: 0 12px;
+            height: 48px; margin-bottom: 12px; transition: 0.3s; position: relative;
+        }
+        .input-group:focus-within { border-color: var(--primary-neon); background: rgba(0,0,0,0.5); box-shadow: 0 0 15px rgba(255, 71, 87, 0.1); }
+        .input-group i { color: #7f8c8d; margin-left: 10px; font-size: 1.1rem; }
+        .input-group input {
+            flex: 1; background: transparent; border: none; color: #fff; 
+            font-family: 'Poppins', sans-serif; height: 100%; font-size: 0.9rem;
+        }
+
+        hr { border: 0; height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent); margin: 25px 0; }
+
+        .emotes-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .emotes-header span { font-size: 0.9rem; color: #ecf0f1; font-weight: 700; }
+        
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px; max-height: 280px; overflow-y: auto;
+            background: rgba(0,0,0,0.2); border-radius: 15px; padding: 10px;
+            border: 1px solid var(--glass-border);
+        }
+        .gallery-grid::-webkit-scrollbar { width: 5px; }
+        .gallery-grid::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        .emote-img {
+            width: 100%; aspect-ratio: 1; object-fit: contain;
+            background: rgba(255,255,255,0.03); border-radius: 10px;
+            padding: 5px; cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .emote-img:hover { transform: scale(1.1); z-index: 2; }
+
+        .glow-gold { --glow-c: var(--gold-color); }
+        .glow-red  { --glow-c: var(--primary-neon); }
+        .glow-blue { --glow-c: var(--blue-color); }
+        .glow-green{ --glow-c: var(--green-color); }
+
+        .emote-img:hover, .emote-img.active {
+            border-color: var(--glow-c);
+            box-shadow: 0 0 15px var(--glow-c), inset 0 0 10px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.5);
+            filter: drop-shadow(0 0 5px var(--glow-c));
+        }
+
+        .toggle-area {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.05); border-radius: 12px; padding: 8px 15px; margin: 15px 0;
+        }
+        .switch { position: relative; width: 40px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        
+        .slider { 
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; 
+            background-color: var(--neon-pink-red); 
+            border-radius: 34px; transition: .4s; 
+            box-shadow: 0 0 15px var(--neon-pink-red), 0 0 30px rgba(255, 0, 127, 0.7); 
+        }
+
+        .slider:before { 
+            position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; 
+            background-color: white; 
+            border-radius: 50%; transition: .4s;
+            box-shadow: 0 0 15px var(--neon-pink-red), 0 0 30px var(--neon-pink-red); 
+        }
+        
+        input:checked + .slider { 
+            background-color: var(--green-color); 
+            box-shadow: 0 0 10px var(--bright-green-glow), 0 0 20px var(--bright-green-glow); 
+        }
+        
+        input:checked + .slider:before { 
+            transform: translateX(18px); 
+            background-color: white; 
+            box-shadow: 0 0 10px var(--bright-green-glow), 0 0 25px var(--bright-green-glow); 
+        }
+
+        .social-box {
+            display: flex; justify-content: center; gap: 20px;
+            margin-top: 30px; margin-bottom: 10px; padding: 10px;
+        }
+        
+        .social-icon {
+            font-size: 1.5rem; color: #fff;
+            width: 45px; height: 45px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .social-icon.tiktok:hover {
+            background: #000; color: #fff; border-color: #00f2ea;
+            box-shadow: -3px -3px 15px rgba(0, 242, 234, 0.6), 3px 3px 15px rgba(255, 0, 80, 0.6);
+            text-shadow: 2px 2px 0px #ff0050, -2px -2px 0px #00f2ea;
+            transform: translateY(-5px) scale(1.1);
+        }
+        .social-icon.telegram:hover {
+            background: #24A1DE; border-color: #24A1DE;
+            box-shadow: 0 0 25px rgba(36, 161, 222, 0.7);
+            transform: translateY(-5px) scale(1.1);
+        }
+        .social-icon.instagram:hover {
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            border-color: #d6249f;
+            box-shadow: 0 0 25px rgba(214, 36, 159, 0.7);
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .dev-pill {
+            background: #111; padding: 8px 20px; border-radius: 50px;
+            display: flex; align-items: center; gap: 10px; margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .dev-name { 
+            font-family: 'Rubik Wet Paint', cursive; font-weight: 400; font-size: 1.2rem; 
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #ff0000, #FFD700);
+            background-size: 200% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(255, 127, 80, 0.7)); 
+            animation: devTextShine 3s linear infinite; 
+        }
+        @keyframes devTextShine {
+            0% { background-position: 200% center; filter: drop-shadow(0 0 8px rgba(255, 127, 80, 0.7)); }
+            50% { filter: drop-shadow(0 0 15px rgba(255, 94, 98, 1)); } 
+            100% { background-position: 0% center; filter: drop-shadow(0 0 8px rgba(255, 127, 80, 0.7)); }
+        }
+        
+        .verified-icon {
+            color: #1DA1F2; font-size: 1.1rem;
+            animation: blueGlow 2s infinite alternate;
+        }
+        @keyframes blueGlow {
+            from { filter: drop-shadow(0 0 2px rgba(29, 161, 242, 0.5)); }
+            to { filter: drop-shadow(0 0 10px rgba(29, 161, 242, 1)); }
+        }
+
+        #msg-box {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            padding: 12px 25px; border-radius: 12px; font-weight: 600; font-size: 0.9rem;
+            z-index: 100; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            min-width: 250px; text-align: center;
+        }
+        .msg-success { background: rgba(46, 213, 115, 0.9); color: #fff; backdrop-filter: blur(5px); }
+        .msg-error { background: rgba(255, 71, 87, 0.9); color: #fff; backdrop-filter: blur(5px); }
+
+        .hidden { display: none; }
+        .loader { text-align: center; padding: 20px; color: #888; font-size: 0.85rem; }
+
+        /* --- ستايلات الزر الجديد (Launch Button) --- */
+        .btn-launch-mode {
+            width: 100%; padding: 18px; border: none; border-radius: 20px; 
+            background: linear-gradient(45deg, var(--launch-color-blue), var(--launch-color-purple), var(--launch-color-red)); 
+            background-size: 300% 300%;
+            color: white; font-weight: 800; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            cursor: pointer; position: relative; overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 191, 255, 0.5), 0 0 20px rgba(138, 43, 226, 0.4); 
+            transition: all 0.4s ease-in-out; 
+            animation: glowingLaunch 5s infinite alternate; 
+            margin: 25px 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-launch-mode:hover {
+            transform: scale(1.03); 
+            box-shadow: 0 12px 40px rgba(0, 191, 255, 0.8), 0 0 30px rgba(138, 43, 226, 0.6);
+            background-position: 100% 50%;
+        }
+        .btn-launch-mode:active { 
+            transform: scale(0.98); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+        .btn-launch-mode i { 
+            font-size: 1.8rem; 
+            transition: 0.3s; 
+            filter: drop-shadow(0 0 8px #fff); 
+        }
+        
+        @keyframes glowingLaunch {
+            0% { background-position: 0% 50%; box-shadow: 0 0 10px rgba(0, 191, 255, 0.7); }
+            50% { background-position: 100% 50%; box-shadow: 0 0 25px rgba(138, 43, 226, 0.9); }
+            100% { background-position: 0% 50%; box-shadow: 0 0 10px rgba(255, 69, 0, 0.7); }
+        }
+
+        /* --- ستايلات محاكاة الأيقونة العائمة / الـ Modal --- */
+        #floating-gallery-modal {
+            position: fixed; 
+            top: 50%; 
+            right: 15px; /* تثبيت في الجانب الأيمن */
+            transform: translateY(-50%);
+            width: 90%; 
+            max-width: 300px; /* حجم معقول للأيقونة العائمة */
+            max-height: 80%;
+            background: rgba(10, 11, 16, 0.98); /* خلفية داكنة جداً */
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 0 30px rgba(0, 191, 255, 0.8);
+            border: 2px solid var(--launch-color-purple);
+            z-index: 50; /* تأكد من أنها فوق كل شيء */
+            display: none; /* مخفية بشكل افتراضي */
+            animation: modalPopIn 0.3s ease-out;
+            pointer-events: all;
+        }
+
+        @keyframes modalPopIn {
+            from { opacity: 0; transform: translateY(-50%) scale(0.8); }
+            to { opacity: 1; transform: translateY(-50%) scale(1); }
+        }
+        
+        /* تعديل حقول الإدخال داخل الـ Modal */
+        #floating-gallery-modal .input-group {
+             margin-bottom: 8px; /* تقليل المسافة بين الحقول */
+             height: 40px;
+        }
+        #floating-gallery-modal .toggle-area {
+            margin: 10px 0;
+            padding: 5px 10px;
+        }
+
+        #floating-gallery-modal .gallery-grid {
+            max-height: 250px; /* لتقليل ارتفاع القائمة داخل الـ Modal */
+        }
+        
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0 0 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px;
+        }
+        .modal-header h4 { 
+            font-size: 1rem; color: #fff; 
+            text-shadow: 0 0 5px var(--launch-color-blue);
+        }
+        .modal-header .close-btn { 
+            background: var(--primary-neon); 
+            border: none; border-radius: 50%; 
+            width: 30px; height: 30px; line-height: 30px; 
+            color: #fff; cursor: pointer; font-weight: bold;
+            transition: 0.2s;
+        }
+        .modal-header .close-btn:hover { background: #e02f3a; transform: scale(1.1); }
+        
+        /* محاكاة الأيقونة العائمة نفسها */
+        #floating-emote-icon {
+            position: fixed;
+            bottom: 50px;
+            right: 20px;
+            background: linear-gradient(45deg, #00BFFF, #8A2BE2);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: none; /* مخفية بشكل افتراضي */
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.8), 0 0 30px rgba(138, 43, 226, 0.6);
+            border: 3px solid #fff;
+            z-index: 50;
+            animation: iconPulse 2s infinite ease-in-out;
+            pointer-events: all;
+        }
+        #floating-emote-icon i { font-size: 1.5rem; color: #fff; }
+
+        @keyframes iconPulse {
+            0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 191, 255, 0.8); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(138, 43, 226, 1); }
+            100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 69, 0, 0.7); }
+        }
+
+        /* إخفاء لوحة التحكم الرئيسية عند تفعيل الوضع العائم */
+        .container.minimized {
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="msg-box"></div>
+
+    <div class="container">
+        
+        <div class="header">
+            <div class="settings-btn" id="settings-btn">
+                <i class="fas fa-ghost"></i>
+            </div>
+
+            <div class="title-box">
+                <h1>SNOPI <span>BOT</span></h1>
+            </div>
+            <div class="vip-badge">
+                <i class="fas fa-crown"></i> VIP MEMBER
+            </div>
+            <br>
+            <div class="status-pill">
+                <span class="dot" id="status-dot"></span>
+                <span id="status-text">جاري التحقق...</span>
+            </div>
+        </div>
+        
+        <div class="page-section active" id="code-access-section">
+            <div class="vip-code-section">
+                <h2><i class="fas fa-key"></i> أدخل كود التفعيل VIP</h2>
+                <div class="input-group">
+                    <i class="fas fa-crown"></i>
+                    <input type="text" id="activation-code-input" placeholder="كود التفعيل">
+                </div>
+                <button class="btn-gold" id="activate-btn">
+                    <i class="fas fa-unlock-alt"></i>
+                    تفعيل واجهة SNOPI BOT
+                </button>
+                <div style="margin-top: 20px; font-size: 0.8rem; color: #7f8c8d;">
+                    مدة الكود محددة بوقت، الرجاء الاحتفاظ بالكود!
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="social-box">
+                <a href="https://www.tiktok.com/@bilal.tarek_35k.off?_r=1&_t=ZS-91XHgOQNbpy" target="_blank" class="social-icon tiktok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://t.me/SNOPIv5" target="_blank" class="social-icon telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                </a>
+                <a href="https://www.instagram.com/bilal.tarek_35k.ocm?igsh=MTZlbWNtNWU2Ym5xcg==" target="_blank" class="social-icon instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <div class="dev-pill">
+                    <span style="font-size: 0.75rem; color: #888;">Developer:</span>
+                    <span class="dev-name">SNOPI-HEX-EMOT</span>
+                    <i class="fas fa-circle-check verified-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-section" id="bot-dashboard-section">
+            
+            <button class="btn-launch-mode" id="launch-floating-mode">
+                <i class="fas fa-play-circle"></i>
+                تفعيل وضع الرقصات العائم
+            </button>
+
+            <hr>
+            
+            <div class="emotes-header">
+                <span><i class="fas fa-music" style="color: var(--primary-neon);"></i> الرقصات (للعرض فقط)</span>
+                <span style="font-size: 0.7rem; color: #777;">تظهر أيضاً في الوضع العائم</span>
+            </div>
+            <div class="gallery-grid" id="gallery"></div>
+            <div class="loader" id="gallery-loader"><i class="fas fa-spinner fa-spin"></i> جاري تحميل الموارد...</div>
+            
+            <hr>
+            
+            <div class="social-box">
+                <a href="https://www.tiktok.com/@bilal.tarek_35k.off?_r=1&_t=ZS-91XHgOQNbpy" target="_blank" class="social-icon tiktok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://t.me/SNOPIv5" target="_blank" class="social-icon telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                </a>
+                <a href="https://www.instagram.com/bilal.tarek_35k.ocm?igsh=MTZlbWNtNWU2Ym5xcg==" target="_blank" class="social-icon instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <div class="dev-pill">
+                    <span style="font-size: 0.75rem; color: #888;">Developer:</span>
+                    <span class="dev-name">SNOPI-HEX-EMOT</span>
+                    <i class="fas fa-circle-check verified-icon"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-section" id="admin-login-section">
+             <div class="login-panel">
+                <h2><i class="fas fa-user-shield"></i> تسجيل دخول المسؤول</h2>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="admin-user" placeholder="اسم المستخدم">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="admin-pass" placeholder="كلمة المرور">
+                </div>
+                <button class="btn-admin" id="admin-login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    تسجيل الدخول
+                </button>
+                <button class="btn-admin" style="background: #34495e; margin-top: 10px;" id="back-to-main-btn">
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                    العودة للرئيسية
+                </button>
+             </div>
+        </div>
+
+        <div class="page-section" id="admin-panel-section">
+            <div class="admin-panel">
+                <h2><i class="fas fa-cogs"></i> لوحة إنشاء الأكواد</h2>
+
+                <div class="input-group">
+                    <i class="fas fa-infinity"></i>
+                    <input type="text" id="generated-code-output" placeholder="الكود الذي سيتم إنشاؤه" readonly>
+                </div>
+                
+                <p style="font-size: 0.9rem; margin-bottom: 10px; color: #ccc; font-weight: 600;">اختر مدة الصلاحية:</p>
+                <div class="admin-options">
+                    <input type="radio" id="duration-1m" name="duration" value="1" data-unit="minute"><label for="duration-1m">1 دقيقة</label>
+                    <input type="radio" id="duration-1h" name="duration" value="1" data-unit="hour"><label for="duration-1h">1 ساعة</label>
+                    <input type="radio" id="duration-1d" name="duration" value="1" data-unit="day" checked><label for="duration-1d">1 يوم</label>
+                    <input type="radio" id="duration-1w" name="duration" value="7" data-unit="day"><label for="duration-1w">1 أسبوع</label>
+                    <input type="radio" id="duration-1mth" name="duration" value="30" data-unit="day"><label for="duration-1mth">1 شهر</label>
+                    <input type="radio" id="duration-1y" name="duration" value="365" data-unit="day"><label for="duration-1y">1 سنة</label>
+                    <input type="radio" id="duration-10y" name="duration" value="3650" data-unit="day"><label for="duration-10y">10 سنوات</label>
+                </div>
+
+                <button class="btn-admin" id="generate-code-btn">
+                    <i class="fas fa-bolt"></i>
+                    إنشاء كود تفعيل
+                </button>
+                <button class="btn-admin" style="background: #34495e; margin-top: 10px;" id="admin-logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل الخروج
+                </button>
+            </div>
+        </div>
+
+    </div>
+    
+    <div id="floating-emote-icon">
+        <i class="fas fa-compact-disc"></i>
+    </div>
+    
+    <div id="floating-gallery-modal">
+        <div class="modal-header">
+            <h4><i class="fas fa-rocket"></i> إطلاق الرقصة السريع</h4>
+            <button class="close-btn" id="close-floating-gallery">&times;</button>
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-hashtag"></i>
+            <input type="text" id="team_code_em_modal" placeholder="كود الفريق (للرقصات)" required>
+        </div>
+
+        <div class="toggle-area">
+            <span style="font-size:0.75rem; color: #ccc;">UIDs محددة</span>
+            <label class="switch">
+                <input type="checkbox" id="mode_sw_modal">
+                <span class="slider round"></span>
+            </label>
+            <span style="font-size:0.75rem; color: #fff; font-weight:bold;">الكل (All)</span>
+        </div>
+
+        <div class="input-group" id="uid_area_modal">
+            <i class="fas fa-users"></i>
+            <input type="text" id="uids_val_modal" placeholder="1234567, 891011...">
+        </div>
+        <div class="gallery-grid" id="modal-gallery">
+            </div>
+        <div class="loader" id="modal-gallery-loader" style="display:none;"><i class="fas fa-spinner fa-spin"></i> جاري تحميل الرقصات...</div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // ===============================================
+            // ** المتغيرات والثوابت **
+            // ===============================================
+            const ADMIN_USER = 'bilal'; 
+            const ADMIN_PASS = 'bilal2002';
+
+            const CODES_KEY = 'snopi_activation_codes';
+            const SESSION_KEY = 'snopi_session_expiry';
+
+            const msgBox = document.getElementById('msg-box');
+            
+            const sections = {
+                'code-access-section': document.getElementById('code-access-section'),
+                'bot-dashboard-section': document.getElementById('bot-dashboard-section'),
+                'admin-login-section': document.getElementById('admin-login-section'),
+                'admin-panel-section': document.getElementById('admin-panel-section'),
+            };
+            
+            const mainContainer = document.querySelector('.container');
+            const floatingIcon = document.getElementById('floating-emote-icon');
+            const floatingModal = document.getElementById('floating-gallery-modal');
+            const modalGallery = document.getElementById('modal-gallery');
+            const modeSwModal = document.getElementById('mode_sw_modal');
+            const uidAreaModal = document.getElementById('uid_area_modal');
+
+
+            // ===============================================
+            // ** دالة إرسال الطلبات الحقيقية (REAL API CALL) **
+            // ===============================================
+            async function callApi(endpoint, payload) {
+                // ملاحظة: تم تعديل الـ apiURL ليكون نقطة افتراضية فقط، حيث أن الـ URL الحقيقي لم يُذكر
+                const apiURL = endpoint; 
+                notify("جاري إرسال الطلب إلى الخادم...", true);
+                
+                try {
+                    const response = await fetch(apiURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({ message: `HTTP Error ${response.status}` }));
+                        return { success: false, message: `خطأ ${response.status}: ${errorData.message || 'فشل الاتصال بالخادم.'}` };
+                    }
+
+                    const data = await response.json();
+                    
+                    return data; 
+
+                } catch (error) {
+                    console.error('API Call Error:', error);
+                    return { success: false, message: `فشل الاتصال: تأكد من أن الخادم الخلفي يعمل (${apiURL}).` };
+                }
+            }
+
+
+            // ===============================================
+            // ** وظائف مساعدة **
+            // ===============================================
+            function notify(msg, success = true) {
+                msgBox.textContent = msg;
+                msgBox.className = success ? 'msg-success' : 'msg-error';
+                msgBox.style.display = 'block';
+                msgBox.style.animation = 'fadeUp 0.4s forwards';
+                setTimeout(() => { msgBox.style.display = 'none'; }, 4000);
+            }
+
+            function switchSection(sectionId) {
+                Object.keys(sections).forEach(id => {
+                    sections[id].classList.remove('active');
+                });
+                sections[sectionId].classList.add('active');
+                // تأكد من إخفاء الأيقونة العائمة عند التبديل
+                floatingIcon.style.display = 'none';
+                floatingModal.style.display = 'none';
+                mainContainer.classList.remove('minimized');
+            }
+
+            function getCodes() {
+                const codes = localStorage.getItem(CODES_KEY);
+                return codes ? JSON.parse(codes) : {};
+            }
+
+            function saveCodes(codes) {
+                localStorage.setItem(CODES_KEY, JSON.stringify(codes));
+            }
+            
+            function checkSession() {
+                const expiry = sessionStorage.getItem(SESSION_KEY);
+                const now = new Date().getTime();
+
+                if (!expiry || now >= parseInt(expiry)) {
+                    sessionStorage.removeItem(SESSION_KEY);
+                    document.getElementById('status-text').textContent = 'غير متصل (انتهت الصلاحية)';
+                    document.getElementById('status-dot').className = 'dot';
+                    document.getElementById('status-text').style.color = '#e74c3c';
+                    return false;
+                }
+                
+                const timeLeft = parseInt(expiry) - now;
+                const minutesLeft = Math.ceil(timeLeft / (1000 * 60));
+                
+                document.getElementById('status-text').textContent = `متصل (متبقي: ${minutesLeft} دقيقة)`;
+                document.getElementById('status-dot').className = 'dot online';
+                document.getElementById('status-text').style.color = '#2ed573';
+                
+                return true;
+            }
+            
+            function checkInitialAccess() {
+                const isAdmin = sessionStorage.getItem('admin_logged_in') === 'true';
+                if (isAdmin) {
+                    switchSection('admin-panel-section');
+                    document.getElementById('status-text').textContent = 'لوحة الإدارة';
+                    document.getElementById('status-dot').className = 'dot';
+                } else if (checkSession()) {
+                    switchSection('bot-dashboard-section');
+                } else {
+                    switchSection('code-access-section');
+                    checkStatus(true); 
+                }
+            }
+
+
+            // ===============================================
+            // ** منطق لوحة الإدارة و الأكواد (بدون تغيير) **
+            // ===============================================
+            const settingsBtn = document.getElementById('settings-btn');
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', function() {
+                    switchSection('admin-login-section');
+                });
+            }
+            
+            const backToMainBtn = document.getElementById('back-to-main-btn');
+            if (backToMainBtn) {
+                backToMainBtn.addEventListener('click', () => {
+                    checkInitialAccess(); 
+                });
+            }
+
+            document.getElementById('admin-logout-btn')?.addEventListener('click', () => {
+                sessionStorage.removeItem('admin_logged_in');
+                notify('تم تسجيل الخروج من لوحة الإدارة', true);
+                checkInitialAccess(); 
+            });
+
+            document.getElementById('admin-login-btn').addEventListener('click', () => {
+                const user = document.getElementById('admin-user').value.trim();
+                const pass = document.getElementById('admin-pass').value.trim();
+
+                if (user === ADMIN_USER && pass === ADMIN_PASS) {
+                    sessionStorage.setItem('admin_logged_in', 'true');
+                    notify('مرحباً بك يا بلال! تم تسجيل الدخول كمسؤول.', true);
+                    document.getElementById('admin-user').value = '';
+                    document.getElementById('admin-pass').value = '';
+                    switchSection('admin-panel-section');
+                    checkInitialAccess(); 
+                } else {
+                    notify('خطأ: اسم المستخدم أو كلمة المرور غير صحيحة.', false);
+                }
+            });
+
+            document.getElementById('generate-code-btn').addEventListener('click', () => {
+                const durationRadio = document.querySelector('input[name="duration"]:checked');
+                if (!durationRadio) {
+                    return notify("الرجاء اختيار مدة الصلاحية أولاً", false);
+                }
+                
+                const value = parseInt(durationRadio.value);
+                const unit = durationRadio.dataset.unit;
+                
+                let durationMs = 0;
+                switch(unit) {
+                    case 'minute': durationMs = value * 60 * 1000; break;
+                    case 'hour': durationMs = value * 60 * 60 * 1000; break;
+                    case 'day': durationMs = value * 24 * 60 * 60 * 1000; break;
+                }
+                
+                const randomNumber = Math.floor(1000 + Math.random() * 9000); 
+                const newCode = `SNOPI-HEX-VIP-${randomNumber}`; 
+                
+                const codes = getCodes();
+                codes[newCode] = { durationMs: durationMs };
+                saveCodes(codes);
+                
+                document.getElementById('generated-code-output').value = newCode;
+                notify(`تم إنشاء كود بنجاح: ${newCode}`, true);
+            });
+            
+            document.getElementById('activate-btn').addEventListener('click', () => {
+                const codeInput = document.getElementById('activation-code-input');
+                const code = codeInput.value.trim().toUpperCase();
+                const codes = getCodes();
+
+                if (!code) {
+                    return notify("الرجاء إدخال كود التفعيل", false);
+                }
+                
+                if (!codes[code]) {
+                    return notify("خطأ: كود تفعيل غير صحيح", false);
+                }
+
+                const codeData = codes[code];
+                const now = new Date().getTime();
+
+                if (codeData.used) {
+                    const expiryTime = parseInt(codeData.used) + codeData.durationMs;
+                    if (now >= expiryTime) {
+                        return notify("خطأ: انتهت صلاحية الكود (مستخدم سابقاً)", false);
+                    }
+                    sessionStorage.setItem(SESSION_KEY, expiryTime);
+                } else {
+                    const expiryTime = now + codeData.durationMs;
+                    codes[code].used = now;
+                    saveCodes(codes);
+                    sessionStorage.setItem(SESSION_KEY, expiryTime);
+                }
+
+                notify('تم تفعيل الكود بنجاح! مرحباً بك في لوحة التحكم.', true);
+                switchSection('bot-dashboard-section');
+                codeInput.value = ''; 
+                checkSession(); 
+            });
+
+
+            // ===============================================
+            // ** منطق الرقصات (Gallery & Sending) **
+            // ===============================================
+
+            const gallery = document.getElementById('gallery');
+            const loader = document.getElementById('gallery-loader');
+            const baseUrl = 'https://cdn.jsdelivr.net/gh/ShahGCreator/icon@main/PNG/';
+            let emotes = [];
+            
+            function pushRange(s, e) { for(let i=s; i<=e; i++) emotes.push(909000000 + i); }
+
+            // تحديد أكواد الرقصات المتاحة
+            pushRange(1, 150); pushRange(33001, 33010); pushRange(34001, 34014); pushRange(35001, 35015); pushRange(36001, 36014); pushRange(37001, 37012); pushRange(38001, 38013); pushRange(39001, 39014); pushRange(40001, 40014); pushRange(41001, 41015); pushRange(42001, 42018); pushRange(43001, 43013); pushRange(44001, 44016); pushRange(45001, 45017); pushRange(46001, 46017); pushRange(47001, 47019); pushRange(48001, 48018); pushRange(49001, 49021); pushRange(50002, 50030); pushRange(51001, 51020);
+
+
+            function getColorClass(id) {
+                const lastDigit = id % 10;
+                if ([0, 1, 2].includes(lastDigit)) return 'glow-gold';
+                if ([3, 4, 5].includes(lastDigit)) return 'glow-red';
+                if ([6, 7].includes(lastDigit)) return 'glow-blue';
+                return 'glow-green';
+            }
+
+            let loadedCount = 0;
+            
+            function loadEmotes(targetGallery, targetLoader) {
+                targetGallery.innerHTML = '';
+                targetLoader.style.display = 'block';
+                targetLoader.textContent = 'جاري تحميل الموارد...';
+
+                let imagesToLoad = emotes.length;
+                let imagesProcessed = 0; 
+                let currentLoadedCount = 0;
+                
+                const finishProcessing = () => {
+                    imagesProcessed++;
+                    if (imagesProcessed >= imagesToLoad) {
+                        targetLoader.textContent = `تم تحميل ${currentLoadedCount} رقصة بنجاح.`;
+                        if(targetGallery.id === 'gallery') loadedCount = currentLoadedCount;
+                    }
+                };
+
+                emotes.forEach(id => {
+                    const img = document.createElement('img');
+                    img.src = `${baseUrl}${id}.png`;
+                    img.className = `emote-img ${getColorClass(id)}`;
+                    img.loading = "lazy";
+                    img.dataset.emoteId = id; 
+                    
+                    img.onerror = function() { this.remove(); finishProcessing(); };
+                    
+                    img.onload = function() {
+                        targetGallery.appendChild(this);
+                        currentLoadedCount++;
+                        finishProcessing();
+                    }
+                    img.onclick = () => sendEmote(id, img);
+                });
+            }
+
+
+            modeSwModal.addEventListener('change', (e) => {
+                uidAreaModal.style.display = e.target.checked ? 'none' : 'flex';
+            });
+            uidAreaModal.style.display = modeSwModal.checked ? 'none' : 'flex';
+
+
+            // --- 3. Emote Sending Logic (Team Code / UID) ---
+            async function sendEmote(id, imgEl) {
+                if (!checkSession()) return notify('انتهت صلاحية الجلسة. أعد التفعيل.', false);
+
+                // إزالة التحديد القديم وإضافة التحديد الجديد
+                document.querySelectorAll('.emote-img').forEach(e => e.classList.remove('active'));
+                imgEl.classList.add('active');
+
+                // استخدام الحقول الموجودة في الـ Modal
+                const tCode = document.getElementById('team_code_em_modal').value.trim();
+                const isAll = modeSwModal.checked;
+                const uids = document.getElementById('uids_val_modal').value.trim();
+                
+                if(!tCode) {
+                    notify("أدخل كود الفريق أولاً", false);
+                    imgEl.classList.remove('active');
+                    return;
+                }
+                if(!isAll && !uids) {
+                    notify("أدخل UIDs أو فعل وضع الكل", false);
+                    imgEl.classList.remove('active');
+                    return;
+                }
+
+                const endpoint = isAll ? '/api/temote_all' : '/api/temote';
+                
+                const payload = { 
+                    team_code: tCode, 
+                    emote_id: id 
+                };
+                if (!isAll) {
+                    // تحويل السلسلة إلى مصفوفة من UIDs
+                    payload.uids = uids.split(',').map(uid => uid.trim()).filter(uid => uid.length > 0);
+                }
+
+                const result = await callApi(endpoint, payload);
+
+                notify(result.message, result.success);
+                
+                // إخفاء الـ Modal بعد الإرسال الناجح للمحافظة على المحاكاة
+                if (result.success) {
+                    floatingModal.style.display = 'none';
+                }
+
+                // إزالة التحديد بعد 4 ثوانٍ
+                setTimeout(() => {
+                    imgEl.classList.remove('active');
+                }, 4000);
+            }
+            
+            // ===============================================
+            // ** منطق الزر الجديد والأيقونة العائمة **
+            // ===============================================
+            document.getElementById('launch-floating-mode').addEventListener('click', () => {
+                if (!checkSession()) return notify('انتهت صلاحية الجلسة. أعد التفعيل.', false);
+
+                // 1. عرض الأيقونة العائمة وإخفاء الواجهة الرئيسية (محاكاة التفعيل)
+                floatingIcon.style.display = 'flex';
+                mainContainer.classList.add('minimized');
+                notify('تم تفعيل الوضع العائم بنجاح. اضغط على الأيقونة لإظهار الرقصات.', true);
+            });
+            
+            floatingIcon.addEventListener('click', () => {
+                // 2. عند الضغط على الأيقونة العائمة، عرض الـ Modal
+                floatingModal.style.display = 'block';
+                // التحقق من أن معرض الرقصات داخل الـ Modal محمل
+                if(modalGallery.children.length === 0 || modalGallery.children.length !== loadedCount) {
+                    // تحميل الرقصات داخل الـ Modal إذا لم تكن موجودة أو كانت غير كاملة
+                    loadEmotes(modalGallery, document.getElementById('modal-gallery-loader'));
+                }
+            });
+            
+            document.getElementById('close-floating-gallery').addEventListener('click', () => {
+                // إخفاء الـ Modal
+                floatingModal.style.display = 'none';
+            });
+
+
+            // --- Initial Checks and setup ---
+            checkInitialAccess(); 
+            // تحميل الرقصات في المعرض الرئيسي وكذاك ضبط عددها
+            loadEmotes(gallery, loader); 
+
+            // التحقق الدوري من حالة البوت والانتهاء
+            async function checkStatus(initial = false) {
+                const isSessionActive = checkSession(); 
+
+                // تم الاحتفاظ بمنطق Mock Status لمحاكاة اتصال البوت
+                const mockStatus = Math.random() > 0.05 ? { status: 'online', message: 'البوت قيد التشغيل' } : { status: 'offline', message: 'البوت متوقف مؤقتاً' };
+
+                if (sections['bot-dashboard-section'].classList.contains('active')) {
+                    if(!isSessionActive) {
+                         // إلغاء تفعيل الوضع العائم عند انتهاء الصلاحية
+                         floatingIcon.style.display = 'none';
+                         floatingModal.style.display = 'none';
+                         mainContainer.classList.remove('minimized');
+
+                         notify('انتهت صلاحية الكود. الرجاء إعادة التفعيل.', false);
+                         switchSection('code-access-section');
+                         return;
+                    }
+                } else if (sections['code-access-section'].classList.contains('active') || initial) {
+                    document.getElementById('status-dot').className = mockStatus.status === 'online' ? 'dot online' : 'dot';
+                    document.getElementById('status-text').textContent = mockStatus.message;
+                    document.getElementById('status-text').style.color = mockStatus.status === 'online' ? '#2ed573' : '#e74c3c';
+                } 
+            }
+
+            checkStatus(true); 
+            setInterval(checkStatus, 5000); 
+        });
+    </script>
+</body>
+</html>
